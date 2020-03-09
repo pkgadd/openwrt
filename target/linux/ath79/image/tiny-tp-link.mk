@@ -338,7 +338,7 @@ define Device/tplink_tl-wr941-v2
   TPLINK_HWID := 0x09410002
   TPLINK_HWREV := 2
 endef
-TARGET_DEVICES += tplink_tl-wr941-v2
+#TARGET_DEVICES += tplink_tl-wr941-v2
 
 define Device/tplink_tl-wr941-v4
   $(Device/tplink-4m)
