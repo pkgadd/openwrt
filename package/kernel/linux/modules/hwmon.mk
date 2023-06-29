@@ -416,10 +416,16 @@ $(eval $(call KernelPackage,hwmon-mcp3021))
 
 define KernelPackage/hwmon-nct6775
   TITLE:=NCT6106D/6775F/6776F/6779D/6791D/6792D/6793D and compatibles monitoring support
-  KCONFIG:=CONFIG_SENSORS_NCT6775
-  FILES:=$(LINUX_DIR)/drivers/hwmon/nct6775.ko
-  AUTOLOAD:=$(call AutoProbe,nct6775)
-  $(call AddDepends/hwmon,@PCI_SUPPORT @TARGET_x86 +kmod-hwmon-vid)
+  KCONFIG:= \
+	CONFIG_SENSORS_NCT6775_CORE@ge5.19 \
+	CONFIG_SENSORS_NCT6775 \
+	CONFIG_SENSORS_NCT6775_I2C@ge5.19
+  FILES:= \
+	$(LINUX_DIR)/drivers/hwmon/nct6775-core.ko@ge5.19 \
+	$(LINUX_DIR)/drivers/hwmon/nct6775.ko \
+	$(LINUX_DIR)/drivers/hwmon/nct6775-i2c.ko@ge5.19
+  AUTOLOAD:=$(call AutoProbe,nct6775 nct6775-i2c@ge5.19)
+  $(call AddDepends/hwmon,@PCI_SUPPORT @TARGET_x86 +LINUX_6_1:kmod-i2c-core +LINUX_6_1:kmod-regmap-core +kmod-hwmon-vid)
 endef
 
 define KernelPackage/hwmon-nct6775/description
